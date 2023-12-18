@@ -98,8 +98,7 @@ AWS EC2:
 		m5.8xlarge	
 			
 	lauching EC2:
-	ec2 console -> Name(my first instance)-> choose os(amazon linux(free tier)) -> 64bit -> instance type(t2 micro) -> 
-	keypair to login-> (used to connect securely with instance, this is necessary if we use ssh utility) 
+	ec2 console -> Name(my first instance)-> choose os(amazon linux(free tier)) -> 64bit -> instance type(t2 micro) -> keypair to login-> (used to connect securely with instance, this is necessary if we use ssh utility) 
 	create keypair -> rsa -> .pem (for win 10 and higher ) .ppk (win 7 or 8, this will use putty) ->
 	network settings -> under security group firewall -> will go with defaults and use alow ssh traffic from (anywhere) also select http option for now -> 
 	configure storage (defaults) (advanced will show additional options) -> check delete on termination option to "yes" -> 
@@ -122,3 +121,80 @@ AWS EC2:
 		m: instance class
 		5: generation 
 		2xlarge: size within the instance class
+
+	compute optimised instance types 
+	c5, c6 starts with c
+	memory optimised instance types
+	r5, r5a starts with r
+	storage optimised instance types
+	i H starts with
+
+	ec2instances.info -> website to check different instances of ec2
+
+	introduction to security groups
+	sg are fundamental of network security in aws
+	they control how traffic is allowed into or out of our EC2 instances
+		we create a sg around ec2 instance to have rules on inbound and outbound traffic.
+
+	sg only contains allow rules
+	sg rules can reference by ip or by sg
+	
+	good to know 
+	sg can be attached to multiple instances
+	can be locked down to region 
+	if traffic is blocked the instance wont see it 
+	it is good to maintain one seperate security group for ssh access
+	if app is not accessible or throwing "timeout" error then it may be security group issue
+	if its connection refused error then it is app error or its not launched
+	by default all inbout traffic is blocked and outbound traffic is authorised
+
+	classic ports to know
+	22 = SSH(secure shell) - log into a linux instance
+	21 = FTP (File Transfer Protocol) - upload files into a file share
+	22 = sftp (secure file transfer protocol) = upload files using ssh
+	80 = http - access unsecured websites
+	443 = https - access secured websites
+	3389 = RDP (remote desktop protocol) = log into a windows instance
+
+	security group: 
+	network and security -> security groups
+	inbound rules: you can see tcp and http if you delete http you will not be able to access you instance public ip from browser
+	or you can add other ports
+
+	outbound -> all traffic - access whole internet
+
+
+	SSH: how to connect
+	can be used on mac or linux and window >=10 less than win 10 use putty
+	EC2 instance connect: which will use a web browser to connect and works on all os
+	
+	
+
+
+	
+
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
