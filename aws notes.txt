@@ -1,0 +1,124 @@
+Iaas = infrastructure as a service - ec2
+Paas = platform as a service - elastic beanstalk
+Saas - software as a service - machine learning Rekognition
+
+IAM: is a global service
+	create users and can be grouped
+	group developers and group operations also same person can be in 2 or more groups
+	users or groupes can be assigned JSON documents called policies
+	these policies define the permissions of the users
+	in aws you apply the least privilage principle, dont give more services than a user needs
+	
+	not a best practice to chose root user
+	users => create user -> create username ->  i want to create a iam user
+	you can create a group ex: admin group with permissions of admin, choose password options
+	once the user is created, you can see the signin url on right, and you can change the alias of sign in url
+	now you can login using the new alias in a new private window
+
+	we can add the user to different groups
+	we can also create groups ex: developers group
+	in policies we can update permissions by editing the json of policies
+	IAM password policy: Iam MFA overview: 
+	you can set up password policy : password type
+	you can also set MFA: multi factor authentication (password you know + security device you own)
+		google authenticator(phone only) or Authy(multiple)
+		yubiKey by yubico(3rd party)
+		gemalto and hardware  key fob MFA device for aws givCloud (us)
+	
+	Accout settings: 	
+	edit password policy	
+	
+	access aws 
+		aws console
+		aws command line interface
+		aws sdk
+		all are protected by access keys
+		
+	set up aws cmd: install aws cli 2 after googling, download and install msi finish installing
+	open cmd -> aws --version
+	create access key -> click on username under users tab in IAM, click on security credentials -> scroll down and click on create access key
+	select cli -> next -> create access key - download csv
+	configure aws cli:
+	enter access key 
+	secret access key 
+	default region 
+	default output format(none): blank
+	
+	in cmd: type: iam list users -> will list all users
+	cloudshell -> check region -> alternative to teminal -> top right corner of console
+	iam roles for services: creating role for ec2 for accessing aws services
+	click on roles tab: aws service -> select a service form dropdown -> select ec2 -> attach a policy (ex: IAMReadOnlyAccess)-> 
+		role name -> create role
+		
+	iam securitytools -> 
+	iam credentials report(account level)
+		list accout users and status of their various creds
+	iam access advisor(user level)
+		show service permissions granted to users and when it was accessed last time, you can revise policies based on this info
+	
+	click on credentialsreport and download: 
+	access advisor: user usename access advisor
+
+
+AWS EC2: 
+	EC2: Elastic cloud compute -> one of the most popular aws offering -> knowing ec2 is fundamental to understand how the cloud works.
+	Infrastructure as a service
+	mainly consists in the capability of:
+		Renting virtual machines(EC2)
+		storing data on virtual drives: (EBS)
+		distributing load across machines(ELB)
+		scaling the services useing an auto-scaling group(ASG)
+
+	ECS sizing and configuration options:
+		OS: linux(popular), windows, macos
+		how much compute power and cores(cpu)
+		how much RaM
+		how much storage space
+			network attached (EBS AND EFS)
+			hardware (EC2 instance store)
+		network card: speed of the card and public IP address
+		firewall rules: security group
+		Bootstrap script (configure at first launch): EC2 user data`
+	ec2 user data: 
+		it is possible to bootstrap out instances using ec2 user data script
+		bootstraping means lauching commands when machine starts
+		script is only run once at the instance first start
+		ec2 user data is used to automate boot tasks such as 
+			installing updates
+			installing softwares
+			downloading common files from the internet
+			anything you can think of
+		EC2 user data script runs with the root user
+
+	ec2 instance types: example
+		t2.micro
+		t2.xlarge
+		c5d.xlarge
+		r5.16xlarge
+		m5.8xlarge	
+			
+	lauching EC2:
+	ec2 console -> Name(my first instance)-> choose os(amazon linux(free tier)) -> 64bit -> instance type(t2 micro) -> 
+	keypair to login-> (used to connect securely with instance, this is necessary if we use ssh utility) 
+	create keypair -> rsa -> .pem (for win 10 and higher ) .ppk (win 7 or 8, this will use putty) ->
+	network settings -> under security group firewall -> will go with defaults and use alow ssh traffic from (anywhere) also select http option for now -> 
+	configure storage (defaults) (advanced will show additional options) -> check delete on termination option to "yes" -> 
+	advanced details -> user data -> it is used to pass script on the first launch (below is the script)
+		(
+			#!/bin/bash
+			# Use this for your user data (script from top to bottom)
+			# install httpd (Linux 2 version)
+			yum update -y
+			yum install -y httpd
+			systemctl start httpd
+			systemctl enable httpd
+			echo "<h1>Hello World from $(hostname -f)</h1>" > /var/www/html/index.html
+		)
+	finally check the summary -> launch the instance -> view all instances -> it will take 10 to 15 secs to change from pending to running
+
+	instance details you can find private ip, public ip, copy public ip and paste in the browser and check if its working else use http:// before ip.
+	once you stop and start the instance, public ip will be updated private will be the same.
+	m5.2xlarge - 
+		m: instance class
+		5: generation 
+		2xlarge: size within the instance class
